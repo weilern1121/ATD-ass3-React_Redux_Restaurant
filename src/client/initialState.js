@@ -12,13 +12,28 @@ export default {
       size: 200,
       tag: 'art',
       tags: List(),
-      isConnected: null,
+      isConnected: false,
       isLoading: false,
-      user: null
+      user: null,
+      error: {}
+    }),
+    search: Map({
+       results: []
     }),
     error: Map({
-        msg: {},
-        status: null,
-        id: null
+        msg: null,
+        type: null
+    }),
+    rests: Map({
+        restaurants: [],
+        loading: false,
+
+    }),
+    reviewsPage: Map({
+        reviews: [],
+        loading: false,
+
     })
+
+
 };

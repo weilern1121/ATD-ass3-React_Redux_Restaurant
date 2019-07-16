@@ -5,12 +5,12 @@ import {
     ModalHeader,
     ModalBody,
     Form,
-    FormGroup,
+    ButtonGroup,
     Label,
     Input,
     NavLink,
     InputGroup,
-    InputGroupAddon,
+    FormGroup,
     Alert
 } from 'reactstrap';
 import { connect } from 'react-redux';
@@ -46,7 +46,7 @@ class Search extends Component {
     //         }
     //     }
     //
-    //     // If authenticated, close modal
+    //     // If connected, close modal
     //     if (this.state.modal) {
     //         if (isConnected) {
     //             this.toggle();
@@ -86,12 +86,13 @@ class Search extends Component {
         return (
             <div>
                 <InputGroup>
-                    <InputGroupAddon addonType="prepend">@</InputGroupAddon>
+                    <ButtonGroup>
+                        <Button>Rests</Button>
+                        <Button>Users</Button>
+                    </ButtonGroup>
                     <Input placeholder="Search" />
                 </InputGroup>
-                <NavLink onClick={this.toggle} href='#'>
-                    advance search
-                </NavLink>
+
 
                 <Modal isOpen={this.state.modal} toggle={this.toggle}>
                     <ModalHeader toggle={this.toggle}>Register</ModalHeader>

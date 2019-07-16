@@ -13,39 +13,36 @@ import {
 } from 'reactstrap';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { register } from './actions';
-// import { clearErrors } from '../../actions/errorActions';
-import MapContainer from './MapContainer';
+import { login, clearErrors } from './actions';
 
-class Register extends Component {
+class Login extends Component {
     state = {
         modal: false,
         name: '',
-        location: '',
-        pic: '',
         msg: null
     };
 
     static propTypes = {
         isConnected: PropTypes.bool.isRequired,
         error: PropTypes.object.isRequired,
-        register: PropTypes.func.isRequired,
-        // clearErrors: PropTypes.func.isRequired
+        login: PropTypes.func.isRequired,
+        clearErrors: PropTypes.func.isRequired
     };
 
     componentDidUpdate(prevProps) {
-        console.log('UPDATE ACTION:', this.props, prevProps);
-        const { isConnected , error} = this.props;
+        const { error, isConnected } = this.props;
+
+        console.log("UPDATE", this.props, isConnected, error);
         if (error !== prevProps.error) {
             // Check for register error
-            if (this.props.error.type === 'REGISTER_FAIL') {
-                this.setState({ msg: this.props.error.msg });
+            if (error.type === 'LOGIN_FAIL') {
+                this.setState({ msg: error.msg });
             } else {
                 this.setState({ msg: null });
             }
         }
 
-        // If connected, close modal
+        // If connected
         if (this.state.modal) {
             if (isConnected) {
                 this.toggle();
@@ -55,7 +52,7 @@ class Register extends Component {
 
     toggle = () => {
         // Clear errors
-        // this.props.clearErrors();
+        this.props.clearErrors();
         this.setState({
             modal: !this.state.modal
         });
@@ -68,28 +65,19 @@ class Register extends Component {
     onSubmit = e => {
         e.preventDefault();
 
-        const { name, location, pic } = this.state;
-
-        // Create user object
-        const newUser = {
-            name,
-            location,
-            pic
-        };
-
-        // Attempt to register
-        this.props.register(newUser);
+        const { name } = this.state;
+        this.props.login({name});
     };
 
     render() {
         return (
             <div>
                 <NavLink onClick={this.toggle} href='#'>
-                    Register
+                    Login
                 </NavLink>
 
                 <Modal isOpen={this.state.modal} toggle={this.toggle}>
-                    <ModalHeader toggle={this.toggle}>Register</ModalHeader>
+                    <ModalHeader toggle={this.toggle}>Login</ModalHeader>
                     <ModalBody>
                         {this.state.msg ? (
                             <Alert color='danger'>{this.state.msg}</Alert>
@@ -105,24 +93,11 @@ class Register extends Component {
                                     className='mb-3'
                                     onChange={this.onChange}
                                 />
-
-                                <Label for='location'>Location</Label>
-                                <MapContainer/>
-                                <Label for='pic' style={{marginTop:'8.5rem'}}>Picture</Label>
-                                <Input
-                                    type='text'
-                                    name='pic'
-                                    id='pic'
-                                    placeholder='Picture'
-                                    className='mb-3'
-                                    onChange={this.onChange}
-                                />
                                 <Button color='dark' style={{ marginTop: '2rem' }} block>
-                                    Register
+                                    Login
                                 </Button>
                             </FormGroup>
                         </Form>
-
                     </ModalBody>
                 </Modal>
             </div>
@@ -130,15 +105,12 @@ class Register extends Component {
     }
 }
 
-const mapStateToProps = (state) => {
-    return {
+const mapStateToProps = state => ({
     isConnected: state.app.get('isConnected'),
     error: state.app.get('error')
-    }
-};
+});
 
 export default connect(
     mapStateToProps,
-    { register }
-    // { register, clearErrors }
-)(Register);
+    { login , clearErrors}
+)(Login);

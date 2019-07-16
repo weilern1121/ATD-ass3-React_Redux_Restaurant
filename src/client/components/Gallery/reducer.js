@@ -6,6 +6,7 @@ const FILTERS = ['none', 'sepia(100%)', 'invert(100%)', 'grayscale(100%)', 'satu
 
 const GalleryReducer = (state = initialState.gallery, action) => {
   console.log('GalleryReducerState=', state);
+  console.log('Gallery RECEIVED:', action);
   switch (action.type){
     case GalleryActionsConstants.UPDATE_GALLERY_WIDTH:
       console.log('RECEIVED: GalleryActionsConstants.UPDATE_GALLERY_WIDTH');

@@ -13,6 +13,9 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Register from './Register';
 import Search from './Search';
+import AdvanceSearch from './AdvanceSearch';
+import Login from './Login';
+import Profile from './Profile';
 // import LoginModal from './auth/LoginModal';
 // import Logout from './auth/Logout';
 
@@ -22,7 +25,8 @@ class AppMenu extends Component {
     };
 
     static propTypes = {
-        session: PropTypes.object.isRequired
+        isConnected: PropTypes.bool.isRequired,
+        user: PropTypes.object
     };
 
     toggle = () => {
@@ -32,14 +36,16 @@ class AppMenu extends Component {
     };
 
     render() {
-        const { isConnected, user } = this.props.session;
-
+        // const { isConnected, user } = this.props.session;
         const userLinks = (
             <Fragment>
                 <NavItem>
           <span className='navbar-text mr-3'>
-            <strong>{user ? `Hello ${user.name}` : ''}</strong>
+              {this.props.user ? ` Hello ${this.props.user.name}` : ''}
           </span>
+                </NavItem>
+                <NavItem>
+                    <Profile />
                 </NavItem>
                 <NavItem>
                     {/*<Logout />*/}
@@ -50,16 +56,13 @@ class AppMenu extends Component {
         const guestLinks = (
             <Fragment>
                 <NavItem>
-                    <Search/>
+                    <Register/>
                 </NavItem>
+                {/*<span className='navbar-text mr-3'>*/}
+                    {/*<strong>|</strong>*/}
+                {/*</span>*/}
                 <NavItem>
-                    <Register />
-                </NavItem>
-                <span className='navbar-text mr-3'>
-                    <strong>|</strong>
-                </span>
-                <NavItem>
-                    {/*<LoginModal />*/}
+                    <Login/>
                 </NavItem>
             </Fragment>
         );
@@ -72,7 +75,16 @@ class AppMenu extends Component {
                         <NavbarToggler onClick={this.toggle} />
                         <Collapse isOpen={this.state.isOpen} navbar>
                             <Nav className='ml-auto' navbar>
-                                {isConnected ? userLinks : guestLinks}
+                                <NavItem>
+                                    <Search/>
+                                </NavItem>
+                                <NavItem>
+                                    <AdvanceSearch/>
+                                </NavItem>
+                                <span className='navbar-text mr-3'>
+                                <strong>|</strong>
+                                </span>
+                                {this.props.isConnected ? userLinks : guestLinks}
                             </Nav>
                         </Collapse>
                     </Container>
@@ -83,7 +95,8 @@ class AppMenu extends Component {
 }
 
 const mapStateToProps = state => ({
-    session: state.app
+    isConnected: state.app.get('isConnected'),
+    user: state.app.get('user')
 });
 
 export default connect(

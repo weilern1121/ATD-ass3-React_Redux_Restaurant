@@ -9,7 +9,7 @@ const path = require('path');
 
 const config = {
     mongoURL: process.env.MONGO_URL ||
-    'mongodb+srv://kulla123:kulla123@cluster0-7ds67.mongodb.net/test?retryWrites=true&w=majority',
+    'mongodb+srv://kulla123:kulla123@cluster0-7ds67.mongodb.net/SystemDB?retryWrites=true&w=majority',
     port: 8000
 };
 
@@ -38,9 +38,14 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 
 // Add backend api routes
-fs.readdirSync(__dirname + '/api').forEach((file) => {
-  require(`./api/${file.substr(0, file.indexOf('.'))}`)(app);
-});
+// fs.readdirSync(__dirname + '/api').forEach((file) => {
+//   require(`./api/${file.substr(0, file.indexOf('.'))}`)(app);
+// });
+app.use('/api/app', require('./api/app'));
+app.use('/api/restaurants', require('./api/restaurants'));
+app.use('/api/gallery', require('./api/gallery'));
+app.use('/api/reviews', require('./api/reviewsPage'));
+
 
 
 app.listen(config.port || 8000,

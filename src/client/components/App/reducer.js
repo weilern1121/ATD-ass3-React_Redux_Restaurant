@@ -14,27 +14,24 @@ const AppReducer = (state = initialState.app, action) => {
             });
             return state.set('tags', new List(res));
 
-        case AppActionsConstants.GET_ERRORS:
-            return {
-                msg: action.payload.msg,
-                status: action.payload.status,
-                id: action.payload.id
-            };
-
         case AppActionsConstants.REGISTER_SUCCESS:
-            return {
-                ...state,
-                user: action.payload,
-                isConnected: true,
-                isLoading: false
-            };
-        case AppActionsConstants.REGISTER_FAIL:
-            return {
-                ...state,
-                user: null,
-                isConnected: false,
-                isLoading: false
-            };
+            return state.set('user', action.payload).set('isConnected', true).set('isLoading', false);
+
+        case AppActionsConstants.LOGIN_SUCCESS:
+            return state.set('user', action.payload).set('isConnected', true).set('isLoading', false);
+
+        case AppActionsConstants.EDIT_USER_SUCCESS:
+            console.log('EDIT_USER_SUCCESS:', action.payload);
+            return state.set('user', action.payload).set('isConnected', true).set('isLoading', false);
+
+        case AppActionsConstants.ERROR:
+            let error = {
+                msg: action.msg,
+                type: action.api};
+            return state.set('error', error);
+
+        case AppActionsConstants.CLEAR_ERRORS:
+            return state.set('error', {});
         default: //otherwise state is lost!
             return state;
     }

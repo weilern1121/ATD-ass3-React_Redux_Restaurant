@@ -10,6 +10,7 @@ import { Button } from 'primereact/button';
 import { Dropdown } from 'primereact/dropdown';
 import { Provider } from 'react-redux';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import RestPage from "../Restaurants/RestPage";
 
 class App extends React.Component {
     componentDidMount() {
@@ -21,10 +22,11 @@ class App extends React.Component {
       return (
               <div className='App'>
                   <AppMenu />
-                  {/*<Container>*/}
+                  <Container>
+                      <RestPage />
                       {/*<ItemModal />*/}
                       {/*<ShoppingList />*/}
-                  {/*</Container>*/}
+                  </Container>
               </div>
       );
   }
