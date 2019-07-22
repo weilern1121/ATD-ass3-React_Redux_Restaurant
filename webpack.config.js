@@ -33,7 +33,11 @@ module.exports = {
                 "css-loader", // translates CSS into CommonJS
                 "sass-loader" // compiles Sass to CSS, using Node Sass by default
             ]
-        }
+        },
+        {
+            test: /\.(jpg|jpeg|JPG|JPEG|png)$/,
+            loader: 'file-loader?limit=100000'
+        },
     ]
   },
   resolve: {

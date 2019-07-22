@@ -6,22 +6,23 @@ import {
     NavbarBrand,
     Nav,
     NavItem,
-    NavLink,
-    Container
+    Image,
+    Container,
+    NavLink
 } from 'reactstrap';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Register from './Register';
 import Search from './Search';
-import AdvanceSearch from './AdvanceSearch';
 import Login from './Login';
 import Profile from './Profile';
-// import LoginModal from './auth/LoginModal';
-// import Logout from './auth/Logout';
+import {logOut} from "./actions";
+
 
 class AppMenu extends Component {
     state = {
-        isOpen: false
+        isOpen: false,
+        dropdownOpen: false
     };
 
     static propTypes = {
@@ -33,22 +34,45 @@ class AppMenu extends Component {
         this.setState({
             isOpen: !this.state.isOpen
         });
+
     };
 
+    logOut = () =>{
+        this.props.logOut();
+    };
+
+
     render() {
+        const avatarStyle = {
+            display: 'inline',
+            width: "40px",
+            height: "40px",
+        };
+
         // const { isConnected, user } = this.props.session;
         const userLinks = (
             <Fragment>
-                <NavItem>
-          <span className='navbar-text mr-3'>
-              {this.props.user ? ` Hello ${this.props.user.name}` : ''}
-          </span>
-                </NavItem>
+
+              {this.props.user !== null &&
+                  (<NavItem>
+                      <img
+                          alt="Preview"
+                          src={this.props.user.pic}
+                          style={avatarStyle}
+                      />
+                  </NavItem>)}
+                  <NavItem>
+                      <span className='navbar-text mr-3'>
+                          {this.props.user ? ` Hello ${this.props.user.name}` : ''}
+                      </span>
+                  </NavItem>
                 <NavItem>
                     <Profile />
                 </NavItem>
                 <NavItem>
-                    {/*<Logout />*/}
+                    <NavLink onClick={this.logOut} href='#'>
+                        Logout
+                    </NavLink>
                 </NavItem>
             </Fragment>
         );
@@ -78,9 +102,6 @@ class AppMenu extends Component {
                                 <NavItem>
                                     <Search/>
                                 </NavItem>
-                                <NavItem>
-                                    <AdvanceSearch/>
-                                </NavItem>
                                 <span className='navbar-text mr-3'>
                                 <strong>|</strong>
                                 </span>
@@ -101,5 +122,5 @@ const mapStateToProps = state => ({
 
 export default connect(
     mapStateToProps,
-    null
+    {logOut}
 )(AppMenu);

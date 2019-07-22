@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component , Fragment} from 'react';
 import {
     Button,
     Modal,
@@ -14,6 +14,8 @@ import {
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { editUser, clearErrors } from './actions';
+import UserReviews from "./UserReviews";
+import ReactDropzone from "react-dropzone";
 
 class Profile extends Component {
     submitted = false;
@@ -21,7 +23,7 @@ class Profile extends Component {
         modal: false,
         newName: '',
         newLocation: '',
-        newPic: '',
+        newPic: this.props.user.pic,
         msg: null
     };
 
@@ -44,7 +46,7 @@ class Profile extends Component {
                 this.setState({ msg: null });
             }
         }
-        console.log("UPDATE", this.state.modal, user, this.state.newName, this.state.newLocation);
+
         if (this.state.modal) {
             if (this.state.newName ===  user.name
                 && this.state.newLocation ===  user.location
@@ -63,7 +65,8 @@ class Profile extends Component {
         // Clear errors
         this.props.clearErrors();
         this.setState({
-            modal: !this.state.modal
+            modal: !this.state.modal,
+            newPic: this.props.user.pic
         });
     };
 
@@ -77,14 +80,56 @@ class Profile extends Component {
         const oldName = this.props.user.name;
 
         const { newName, newLocation, newPic } = this.state;
-        console.log('editUser on submit ', { newName, newLocation, newPic }, this.state);
-
 
         this.props.editUser({oldName, name: newName, location: newLocation, pic: newPic});
         this.submitted = true;
     };
 
+
+    onPreviewDrop = (files) => {
+        let reader = new FileReader();
+        let file = files[0];
+
+        reader.onloadend = () => {
+            this.setState({
+                newPic: reader.result
+            });
+        };
+
+        reader.readAsDataURL(file);
+    };
+
+
+    onChangePicture = e => {
+        e.preventDefault();
+        let reader = new FileReader();
+        let file = e.target.files[0];
+
+        reader.onloadend = () => {
+            this.setState({
+                newPic: reader.result
+            });
+        };
+        reader.readAsDataURL(file)
+    };
+
     render() {
+        const previewStyle = {
+            display: 'inline',
+            width: 100,
+            height: 100,
+        };
+        const dropStyle = {
+            position: 'relative',
+            width: '95%',
+            height: '100px',
+            borderWidth: '2px',
+            borderStyle: 'dashed',
+            borderRadius: '5px',
+            marginTop:'0.6rem'
+
+        };
+
         return (
             <div>
                 <NavLink onClick={this.toggle} href='#'>
@@ -117,23 +162,40 @@ class Profile extends Component {
                                     className='mb-3'
                                     onChange={this.onChange}
                                 />
-                                <Label for='newPic'>Picture</Label>
-                                <Input
-                                    type='text'
-                                    name='newPic'
-                                    id='newPic'
-                                    placeholder={this.props.user.pic}
-                                    className='mb-3'
-                                    onChange={this.onChange}
+                                <Label for='pic'>Picture</Label>
+                                <div>
+                                    <Fragment>
+                                        <img
+                                            alt="Preview"
+                                            src={this.state.newPic? this.state.newPic : this.props.user.pic}
+                                            style={previewStyle}
+                                        />
+                                    </Fragment>
+                                </div>
+                                <ReactDropzone accept="image/*" style={{borderStyle: 'dashed'}} onDrop={this.onPreviewDrop}>
+                                    {({getRootProps, getInputProps}) => (
+                                        <section className="container">
+                                            <div style={dropStyle} {...getRootProps({className: 'dropzone'})}>
+                                                <input {...getInputProps()} />
+                                                <p>Drag 'n' drop picture</p>
+                                            </div>
+                                        </section>
+                                    )}
+                                </ReactDropzone>
+                                <Input style={{marginTop:'1rem'}}
+                                       type='file'
+                                       name='newPic'
+                                       id='newPic'
+                                       placeholder='Picture'
+                                       className='mb-3'
+                                       onChange={this.onChangePicture}
                                 />
                                 <Button color='dark' style={{ marginTop: '2rem' }} block>
                                     Edit Profile
                                 </Button>
                             </FormGroup>
                         </Form>
-                        <Button color='dark' onClick={this.toggle} style={{ marginTop: '2rem' }} block>
-                            View Reviews
-                        </Button>
+                        <UserReviews name={this.props.user.name}/>
                     </ModalBody>
                 </Modal>
             </div>

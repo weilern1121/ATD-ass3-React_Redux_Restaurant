@@ -1,21 +1,14 @@
-const { List, Map } = require('immutable');
+const { Map } = require('immutable');
 
 export default {
-    gallery: Map({
-        images: List(),
-        openLightBox: false,
-        activeImage: 0,
-        activeFilter: List(),
-        galleryWidth: 0
-    }),
     app: Map({
-      size: 200,
-      tag: 'art',
-      tags: List(),
       isConnected: false,
       isLoading: false,
       user: null,
-      error: {}
+      error: {},
+      user_search_result: null,
+      search:{rests:[], users:[]},
+      user_reviews : Map({})
     }),
     search: Map({
        results: []

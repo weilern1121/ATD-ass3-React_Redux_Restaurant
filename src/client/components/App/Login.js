@@ -32,7 +32,6 @@ class Login extends Component {
     componentDidUpdate(prevProps) {
         const { error, isConnected } = this.props;
 
-        console.log("UPDATE", this.props, isConnected, error);
         if (error !== prevProps.error) {
             // Check for register error
             if (error.type === 'LOGIN_FAIL') {

@@ -1,32 +1,47 @@
 import React from 'react';
 import './App.scss';
-import Gallery from '../Gallery';
 import AppMenu from './AppMenu';
 import { connect } from 'react-redux';
-import AppActions from './actions';
-import GalleryActions from '../Gallery/actions';
 import { Container } from 'reactstrap';
-import { Button } from 'primereact/button';
-import { Dropdown } from 'primereact/dropdown';
-import { Provider } from 'react-redux';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import RestPage from "../Restaurants/RestPage";
+import RestaurantsPool from "../Restaurants/RestaurantsPool";
+import UserModal from "./UserModal";
+import WriteReview from "./WriteReview";
+import ErrorBoundary from "./ErrorBoundary";
 
 class App extends React.Component {
-    componentDidMount() {
-        this.props.loadTagsEventHandler();
+
+    componentDidUpdate(prevProps) {
+        const {user_search_result} = this.props;
+        if (user_search_result !== prevProps.user_search_result) {
+            this.setState({user_search_result: user_search_result})
+        }
     }
 
   render() {
-        // console.log('tags=', this.props.tags);
+      const {user_search_result} = this.props;
+      const previewStyle = {
+          justifyContent: 'center',
+          alignItems: 'center',
+          display: 'inline',
+          width: '80%',
+          height: '80%',
+          position: 'relative',
+          textAlign: 'center',
+          borderWidth: '2px',
+          borderRadius: '5px',
+          marginTop: '0.6rem'
+      };
       return (
               <div className='App'>
                   <AppMenu />
-                  <Container>
-                      <RestPage />
-                      {/*<ItemModal />*/}
-                      {/*<ShoppingList />*/}
-                  </Container>
+
+                      <Container>
+                          {this.props.isConnected === true && <WriteReview/>}
+                          {(this.props.isConnected === true || user_search_result != null || this.props.restsSearch.length !==0) ? null :<img src={require(`../../../../public/pictures/homePhoto.JPG`)} alt="homepic" style={previewStyle}/>}
+                          <RestaurantsPool />
+                          {user_search_result != null && <UserModal/>}
+                      </Container>
               </div>
       );
   }
@@ -35,23 +50,11 @@ class App extends React.Component {
 
 const mapStateToProps = (state) => {
   return {
-      // tag: state['app'].get('tag'),
-      // tags: state['app'].get('tags').toArray()
+      user_search_result: state['app'].get('user_search_result'),
+      user: state.app.get('user'),
+      isConnected: state.app.get('isConnected'),
+      restsSearch: state['rests'].get('restaurants')
   }
 };
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-      loadTagsEventHandler: () => {
-          dispatch(AppActions.loadTagsAction());
-      },
-    updateTagEventHandler: (e) => {
-      dispatch(AppActions.updateTagAction(e.value));
-    },
-    loadImagesEventHandler: (tag) => {
-      dispatch(GalleryActions.loadImagesAction(tag))
-    }
-  }
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default connect(mapStateToProps, null)(App);

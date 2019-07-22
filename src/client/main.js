@@ -16,27 +16,27 @@ import thunk from 'redux-thunk';
 import combineReducers from './reducers';
 import initialState from './initialState'
 
-// //create saga middleware
-// const sagaMiddleware = createSagaMiddleware();
-//
-// //create store, add reducers, attach saga
-// const store = createStore(
-//   reducers,
-//   applyMiddleware(sagaMiddleware)
-// );
-//
-// //run saga(s)
-// sagaMiddleware.run(Sagas);
+//create saga middleware
+const sagaMiddleware = createSagaMiddleware();
 
-
-const middleWare = [thunk];
-
-const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+//create store, add reducers, attach saga
 const store = createStore(
-    combineReducers,
-    initialState,
-    composeEnhancers(applyMiddleware(...middleWare))
+  reducers,
+  applyMiddleware(sagaMiddleware)
 );
+
+//run saga(s)
+sagaMiddleware.run(Sagas);
+
+
+// const middleWare = [thunk];
+//
+// const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+// const store = createStore(
+//     combineReducers,
+//     initialState,
+//     composeEnhancers(applyMiddleware(...middleWare))
+// );
 
 // Render the main component into the dom
 

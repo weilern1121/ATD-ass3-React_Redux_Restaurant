@@ -30,7 +30,7 @@ if (process.env.NODE_ENV !== 'test') {
 const app = express();
 
 //body parser for json. must be done before API routes
-app.use(bodyParser.json());
+app.use(bodyParser.json({limit: '50mb'}));
 app.use(bodyParser.urlencoded({extended:false})); //handle body requests
 console.log(__dirname);
 app.use(express.static(path.join(__dirname, 'public')));
@@ -43,7 +43,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 // });
 app.use('/api/app', require('./api/app'));
 app.use('/api/restaurants', require('./api/restaurants'));
-app.use('/api/gallery', require('./api/gallery'));
 app.use('/api/reviews', require('./api/reviewsPage'));
 
 

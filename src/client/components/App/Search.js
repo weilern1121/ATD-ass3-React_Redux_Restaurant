@@ -11,145 +11,178 @@ import {
     NavLink,
     InputGroup,
     FormGroup,
-    Alert
+    Alert,
+    ButtonDropdown,
+    DropdownToggle,
+    DropdownMenu,
+    DropdownItem,
+    NavItem
 } from 'reactstrap';
 import { connect } from 'react-redux';
+import { search, searchUser, getSearchSuggests } from './actions';
 import PropTypes from 'prop-types';
-import { register } from './actions';
-// import { clearErrors } from '../../actions/errorActions';
+import AdvanceSearch from './AdvanceSearch';
+import AdvanceUserSearch from './AdvanceUserSearch';
+import Autosuggest from 'react-autosuggest';
+
+import theme from "./theme.css";
+
+// Teach Autosuggest how to calculate suggestions for any given input value.
+
+const getSuggestions = (value, suggests) => {
+    const inputValue = value.trim().toLowerCase();
+    const inputLength = inputValue.length;
+    return inputLength === 0 ? [] : suggests.filter(lang =>
+        lang.toLowerCase().slice(0, inputLength) === inputValue
+    );
+};
+
+
+const getSuggestionValue = suggestion => suggestion;
+
+// Use your imagination to render suggestions.
+const renderSuggestion = suggestion => (
+    <div>
+        {suggestion}
+    </div>
+);
 
 class Search extends Component {
-    state = {
-        modal: false,
-        name: '',
-        location: '',
-        pic: '',
-        msg: null
-    };
+
+    constructor(props) {
+        super(props);
+
+        this.toggle = this.toggle.bind(this);
+        this.state = {
+            dropdownOpen: false,
+            searchType: 'Restaurants',
+            value: '',
+            suggestions: []
+        };
+    }
+
+    componentDidMount() {
+        this.props.getSearchSuggests({});
+    }
+
+    componentDidUpdate(prevProps) {
+        if (this.props.suggestions !== prevProps.suggestions) {
+            if (this.state.searchType === 'Restaurants' && this.props.suggestions && (this.state.suggestions.rests !== this.props.suggestions.rests))
+                this.setState({suggestions: this.props.suggestions.rests});
+            if (this.state.searchType === 'Users' && this.props.suggestions && (this.state.suggestions.users !== this.props.suggestions.users))
+                this.setState({suggestions: this.props.suggestions.users});
+        }
+    }
 
     static propTypes = {
-        isAuthenticated: PropTypes.bool,
-        // error: PropTypes.object.isRequired,
-        register: PropTypes.func.isRequired,
-        // clearErrors: PropTypes.func.isRequired
+        search: PropTypes.func.isRequired
     };
 
-    // componentDidUpdate(prevProps) {
-    //     // const { error, isConnected } = this.props;
-    //     const { isConnected , error} = this.props;
-    //     if (error !== prevProps.error) {
-    //         // Check for register error
-    //         if (error.id === 'REGISTER_FAIL') {
-    //             this.setState({ msg: error.msg.msg });
-    //         } else {
-    //             this.setState({ msg: null });
-    //         }
-    //     }
-    //
-    //     // If connected, close modal
-    //     if (this.state.modal) {
-    //         if (isConnected) {
-    //             this.toggle();
-    //         }
-    //     }
-    // }
-
-    toggle = () => {
-        // Clear errors
-        // this.props.clearErrors();
+    onChange = (event, { newValue }) => {
         this.setState({
-            modal: !this.state.modal
+            value: newValue
         });
     };
-
-    onChange = e => {
+    onChange2 = e => {
         this.setState({ [e.target.name]: e.target.value });
+        this.setState({
+            suggestions: []
+        });
     };
 
     onSubmit = e => {
         e.preventDefault();
 
-        const { name, location, pic } = this.state;
-
-        // Create user object
-        const newUser = {
-            name,
-            location,
-            pic
-        };
-
-        // Attempt to register
-        this.props.register(newUser);
+        const { value } = this.state;
+        if(this.state.searchType === 'Restaurants') {
+            if(this.state.value == null || this.state.value === '')
+                this.props.search({});
+            else
+                this.props.search({restName: value});
+        }
+        else {
+            if(this.state.value == null || this.state.value === '')
+                this.props.searchUser({});
+            else
+                this.props.searchUser({name: value});
+        }
+        this.setState({ value: '' });
     };
 
+    toggle() {
+        this.setState({
+            dropdownOpen: !this.state.dropdownOpen
+        });
+    }
+
+    // Autosuggest will call this function every time you need to update suggestions.
+    // You already implemented this logic above, so just use it.
+    onSuggestionsFetchRequested = ({ value }) => {
+        if(this.state.searchType === 'Restaurants')
+            this.setState({suggestions: getSuggestions(value, this.props.suggestions.rests)});
+        else
+            this.setState({suggestions: getSuggestions(value, this.props.suggestions.users)});
+
+    };
+
+    // Autosuggest will call this function every time you need to clear suggestions.
+    onSuggestionsClearRequested = () => {
+        this.setState({
+            suggestions: []
+        });
+    };
+
+
+
+
+
     render() {
+        const { value, suggestions } = this.state;
+        const inputProps = {
+            placeholder: 'Search',
+            value,
+            onChange: this.onChange
+        };
+
         return (
             <div>
-                <InputGroup>
-                    <ButtonGroup>
-                        <Button>Rests</Button>
-                        <Button>Users</Button>
-                    </ButtonGroup>
-                    <Input placeholder="Search" />
-                </InputGroup>
-
-
-                <Modal isOpen={this.state.modal} toggle={this.toggle}>
-                    <ModalHeader toggle={this.toggle}>Register</ModalHeader>
-                    <ModalBody>
-                        {this.state.msg ? (
-                            <Alert color='danger'>{this.state.msg}</Alert>
-                        ) : null}
-                        <Form onSubmit={this.onSubmit}>
-                            <FormGroup>
-                                <Label for='name'>Name</Label>
-                                <Input
-                                    type='text'
-                                    name='name'
-                                    id='name'
-                                    placeholder='Name'
-                                    className='mb-3'
-                                    onChange={this.onChange}
-                                />
-
-                                <Label for='location'>Location</Label>
-                                <Input
-                                    type='location'
-                                    name='location'
-                                    id='location'
-                                    placeholder='Location'
-                                    className='mb-3'
-                                    onChange={this.onChange}
-                                />
-
-                                <Label for='pic'>Picture</Label>
-                                <Input
-                                    type='text'
-                                    name='pic'
-                                    id='pic'
-                                    placeholder='Picture'
-                                    className='mb-3'
-                                    onChange={this.onChange}
-                                />
-                                <Button color='dark' style={{ marginTop: '2rem' }} block>
-                                    Register
-                                </Button>
-                            </FormGroup>
-                        </Form>
-                    </ModalBody>
-                </Modal>
+                <Form onSubmit={this.onSubmit}>
+                    <FormGroup>
+                        <InputGroup>
+                            <ButtonDropdown isOpen={this.state.dropdownOpen} toggle={this.toggle}>
+                                <DropdownToggle caret>
+                                    {this.state.searchType}
+                                </DropdownToggle>
+                                <DropdownMenu>
+                                    <DropdownItem header>Search for:</DropdownItem>
+                                    <DropdownItem onClick={this.onChange2} name='searchType' value='Restaurants'>Restaurants</DropdownItem>
+                                    <DropdownItem onClick={this.onChange2} name='searchType' value='Users'>Users</DropdownItem>
+                                </DropdownMenu>
+                            </ButtonDropdown>
+                            <Autosuggest
+                                suggestions={suggestions}
+                                onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
+                                onSuggestionsClearRequested={this.onSuggestionsClearRequested}
+                                getSuggestionValue={getSuggestionValue}
+                                renderSuggestion={renderSuggestion}
+                                inputProps={inputProps}
+                            />
+                            {this.state.searchType === 'Restaurants' &&
+                            <AdvanceSearch/>
+                            }
+                            {this.state.searchType === 'Users' &&
+                            <AdvanceUserSearch/>
+                            }
+                        </InputGroup>
+                    </FormGroup>
+                </Form>
             </div>
         );
     }
 }
 
 const mapStateToProps = state => ({
-    isConnected: state.app.isConnected,
-    error: state.error
+    suggestions: state.app.get('search')
 });
 
-export default connect(
-    mapStateToProps,
-    { register }
-    // { register, clearErrors }
-)(Search);
+export default connect(mapStateToProps, { search, searchUser, getSearchSuggests })(Search);

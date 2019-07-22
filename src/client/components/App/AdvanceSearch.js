@@ -13,6 +13,7 @@ import {
 } from 'reactstrap';
 import { connect } from 'react-redux';
 import { search } from './actions';
+import PropTypes from 'prop-types';
 
 class AdvanceSearch extends Component {
     state = {
@@ -20,14 +21,12 @@ class AdvanceSearch extends Component {
         restName: null,
         restLocation: null,
         score: null,
-        msg: null
+        msg: null,
+        sort: ''
     };
 
     static propTypes = {
-        // user: PropTypes.object.isRequired,
-        // error: PropTypes.object.isRequired,
-        // editUser: PropTypes.func.isRequired,
-        // clearErrors: PropTypes.func.isRequired
+        search: PropTypes.func.isRequired
     };
 
     toggle = () => {
@@ -42,11 +41,26 @@ class AdvanceSearch extends Component {
 
     onSubmit = e => {
         e.preventDefault();
+        let userLocation = '';
 
-        const { restName, restLocation, score } = this.state;
-        console.log('SEARCH on submit ', { restName, restLocation, score }, this.state);
+        if(this.props.isConnected)
+            userLocation = this.props.user.location;
+        else if (this.state.sort === 'closer') {
+            this.setState({msg:"Need to be logged in for 'closer' option."});
+            return;
+        }
+        const { restName, restLocation, score, sort } = this.state;
 
-        this.props.search({restName , restLocation, score});
+        this.props.search({restName , restLocation, score, userLocation, sort});
+        this.toggle();
+        this.setState({
+            modal: false,
+            restName: null,
+            restLocation: null,
+            score: null,
+            msg: null,
+            sort: ''
+        });
     };
 
     render() {
@@ -88,7 +102,26 @@ class AdvanceSearch extends Component {
                                     <option>>3</option>
                                     <option>>4</option>
                                 </Input>
-                                <Button color='dark' style={{ marginTop: '2rem' }} block>
+                                <Label for='sort'>Sort Results</Label>
+                                <FormGroup check>
+                                    <Label check>
+                                        <Input type="radio"
+                                               name="sort"
+                                               value={'better'}
+                                               onChange={this.onChange}/>
+                                        Better - sort restaurants by rate.
+                                    </Label>
+                                </FormGroup>
+                                <FormGroup check>
+                                    <Label check>
+                                        <Input type="radio"
+                                               name="sort"
+                                               value={'closer'}
+                                               onChange={this.onChange}/>
+                                        Closer - sort results by distance to your location.
+                                    </Label>
+                                </FormGroup>
+                                <Button color='dark' type="button" onClick={this.onSubmit} style={{ marginTop: '2rem' }} block>
                                     Search
                                 </Button>
                             </FormGroup>
@@ -100,10 +133,10 @@ class AdvanceSearch extends Component {
     }
 }
 
-// const mapStateToProps = state => ({
-//     error: state.app.get('error'),
-//     user: state.app.get('user')
-// });
+const mapStateToProps = state => ({
+    user: state.app.get('user'),
+    isConnected: state.app.get('isConnected')
+});
 
 export default connect(
     null,

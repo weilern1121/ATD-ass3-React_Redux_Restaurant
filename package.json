@@ -91,7 +91,9 @@
     "primeicons": "^1.0.0",
     "primereact": "^3.1.4",
     "react": "^16.8.6",
+    "react-autosuggest": "^9.4.3",
     "react-dom": "^16.8.6",
+    "react-dropzone": "^10.1.5",
     "react-fontawesome": "^1.6.1",
     "react-modal-image": "^2.3.2",
     "react-redux": "^7.0.3",
@@ -100,6 +102,7 @@
     "redux": "^4.0.1",
     "redux-saga": "^1.0.2",
     "redux-thunk": "^2.3.0",
+    "superagent": "^5.1.0",
     "webpack-dev-middleware": "^3.7.0",
     "webpack-hot-middleware": "^2.25.0"
   },
