@@ -30,6 +30,7 @@ class ReviewsPage extends Component {
         this.toggle224 = this.toggle224.bind(this);
         this.toggle225 = this.toggle225.bind(this);
         this.toggle226 = this.toggle226.bind(this);
+        this.toggle4 = this.toggle4.bind(this);
         this.state = {
             dropdownOpen1: false, //sort-main
             dropdownOpen11: false, //sort-By specific
@@ -119,6 +120,10 @@ class ReviewsPage extends Component {
         });
     }
 
+    //used to remove warnings
+    toggle4() {
+    }
+
     static propTypes = {
         getReviews: PropTypes.func.isRequired,
         reviews: PropTypes.array.isRequired,
@@ -136,7 +141,7 @@ class ReviewsPage extends Component {
             dropdownOpen223: false, //filter-specific-staff
             dropdownOpen224: false, //filter-specific-drive
             dropdownOpen225: false, //filter-specific-delivery
-            dropdownOpen226: false, //filter-specific-food
+            dropdownOpen226: false //filter-specific-food
         });
     };
 
@@ -161,6 +166,15 @@ class ReviewsPage extends Component {
         //close buttons
         this.closeAllButtons();
     };
+
+    //0- normal filter, 1-date filter, 2-specific filter
+    filterButtonOptions() {
+        if (this.state.filter === 'Filter')
+            return 0;
+        if (this.state.filter === 'lastYear' || this.state.filter === 'lastMonth' || this.state.filter === 'lastWeek')
+            return 1;
+        return 2;
+    }
 
     updateFilter() {
         const currDate = new Date();
@@ -278,8 +292,22 @@ class ReviewsPage extends Component {
         });
     };
 
+    doNothing = e => {
+    };
+
 
     render() {
+
+        //remove 2 familiar not-relevant warnings
+        const realError = console.error;
+        console.error = (...x) => {
+            const tmp = x[0].split(" ");
+            if ((tmp[0] === "Warning:" && tmp[1] === 'validateDOMNesting(...):') ||
+                (tmp[0] === "Warning:" && tmp[1] === "The" && tmp[2] === "tag" && tmp[5] === "unrecognized")) {
+                return;
+            }
+            realError(...x);
+        };
 
         const sortBySpecificTopicButton = (
             <ButtonDropdown direction="right" isOpen={this.state.dropdownOpen11} toggle={this.toggle11}>
@@ -298,16 +326,15 @@ class ReviewsPage extends Component {
             </ButtonDropdown>
         );
 
-
         const filterByTopicButton = (
-            <ButtonDropdown isOpen={this.state.dropdownOpen22} toggle={this.toggle22}>
+            <ButtonDropdown isOpen={this.state.dropdownOpen22} toggle={this.toggle22} tag="asda">
                 <DropdownToggle caret>
                     Filter by Topic
                 </DropdownToggle>
 
                 <DropdownMenu>
 
-                    <ButtonDropdown isOpen={this.state.dropdownOpen221} toggle={this.toggle221}>
+                    <ButtonDropdown isOpen={this.state.dropdownOpen221} toggle={this.toggle221} tag="d">
                         <DropdownToggle caret>
                             Bathroom Rate
                         </DropdownToggle>
@@ -319,7 +346,7 @@ class ReviewsPage extends Component {
                         </DropdownMenu>
                     </ButtonDropdown>
 
-                    <ButtonDropdown isOpen={this.state.dropdownOpen222} toggle={this.toggle222}>
+                    <ButtonDropdown isOpen={this.state.dropdownOpen222} toggle={this.toggle222} tag="d">
                         <DropdownToggle caret>
                             Clean Rate
                         </DropdownToggle>
@@ -331,8 +358,7 @@ class ReviewsPage extends Component {
                         </DropdownMenu>
                     </ButtonDropdown>
 
-
-                    <ButtonDropdown isOpen={this.state.dropdownOpen223} toggle={this.toggle223}>
+                    <ButtonDropdown isOpen={this.state.dropdownOpen223} toggle={this.toggle223} tag="d">
                         <DropdownToggle caret>
                             Staff Rate
                         </DropdownToggle>
@@ -344,7 +370,7 @@ class ReviewsPage extends Component {
                         </DropdownMenu>
                     </ButtonDropdown>
 
-                    <ButtonDropdown isOpen={this.state.dropdownOpen224} toggle={this.toggle224}>
+                    <ButtonDropdown isOpen={this.state.dropdownOpen224} toggle={this.toggle224} tag="d">
                         <DropdownToggle caret>
                             Drive Rate
                         </DropdownToggle>
@@ -356,7 +382,7 @@ class ReviewsPage extends Component {
                         </DropdownMenu>
                     </ButtonDropdown>
 
-                    <ButtonDropdown isOpen={this.state.dropdownOpen225} toggle={this.toggle225}>
+                    <ButtonDropdown isOpen={this.state.dropdownOpen225} toggle={this.toggle225} tag="d">
                         <DropdownToggle caret>
                             Delivery Rate
                         </DropdownToggle>
@@ -368,7 +394,7 @@ class ReviewsPage extends Component {
                         </DropdownMenu>
                     </ButtonDropdown>
 
-                    <ButtonDropdown isOpen={this.state.dropdownOpen226} toggle={this.toggle226}>
+                    <ButtonDropdown isOpen={this.state.dropdownOpen226} toggle={this.toggle226} tag="d">
                         <DropdownToggle caret>
                             Food Quality Rate
                         </DropdownToggle>
@@ -381,13 +407,11 @@ class ReviewsPage extends Component {
                     </ButtonDropdown>
 
                 </DropdownMenu>
-
             </ButtonDropdown>
         );
 
-
         const filterByTimeButton = (
-            <ButtonDropdown direction="right" isOpen={this.state.dropdownOpen21} toggle={this.toggle21}>
+            <ButtonDropdown direction="right" isOpen={this.state.dropdownOpen21} toggle={this.toggle21} tag="d">
                 <DropdownToggle caret>
                     Filter by Time
                 </DropdownToggle>
@@ -396,19 +420,18 @@ class ReviewsPage extends Component {
                     <DropdownItem name='filter' value='lastMonth' onClick={this.onChange}>Last Month</DropdownItem>
                     <DropdownItem name='filter' value='lastWeek' onClick={this.onChange}>Last Week</DropdownItem>
                 </DropdownMenu>
-
             </ButtonDropdown>
         );
 
         //set the sort button outside the return to make code more clean
         const sortButton = (
-            <ButtonDropdown isOpen={this.state.dropdownOpen1} toggle={this.toggle1} inline>
+            <ButtonDropdown isOpen={this.state.dropdownOpen1} toggle={this.toggle1} tag="d">
                 <DropdownToggle caret>
                     {(this.state.sort === 'Sort') ? 'Sort' :
                         `Sort by: ${this.state.sort}`}
                 </DropdownToggle>
                 <DropdownMenu>
-                    <ButtonDropdown isOpen={this.state.dropdownOpen11} toggle={this.toggle11}>
+                    <ButtonDropdown isOpen={this.state.dropdownOpen11} toggle={this.toggle11} tag="d">
                         <DropdownItem name='sort' value='Newest' onClick={this.onChange}>newest</DropdownItem>
                         <DropdownItem name='sort' value='Oldest' onClick={this.onChange}>oldest</DropdownItem>
                         <DropdownItem name='sort'>{sortBySpecificTopicButton}</DropdownItem>
@@ -417,24 +440,28 @@ class ReviewsPage extends Component {
             </ButtonDropdown>
         );
 
+        //get the type of filter-button
+        const filterButtonType = this.filterButtonOptions();
 
         //set the sort button outside the return to make code more clean.
         // in DropdownToggle - there is a dynamic button, changed by filter type
         const filterButton = (
-            <ButtonDropdown isOpen={this.state.dropdownOpen2} toggle={this.toggle2}>
+            <ButtonDropdown isOpen={this.state.dropdownOpen2} toggle={this.toggle2} tag="a">
                 <DropdownToggle caret>
-                    {(this.state.filter === 'Filter') ? 'Filter' :
-                        ` Filtered by: ${this.state.filter} > ${this.state.filterLevel}`}
+                    {(filterButtonType === 0) ? 'Filter' : null}
+                    {(filterButtonType === 1) ? ` Filtered by: ${this.state.filter} ` : null}
+                    {(filterButtonType === 2) ? ` Filtered by: ${this.state.filter} > ${this.state.filterLevel}` : null}
                 </DropdownToggle>
                 <DropdownMenu>
-                    <ButtonDropdown isOpen={this.state.dropdownOpen2}>
-                        <DropdownItem name='filter'>{filterByTopicButton}</DropdownItem>
-                        <DropdownItem name='filter'>{filterByTimeButton}</DropdownItem>
+                    <ButtonDropdown isOpen={this.state.dropdownOpen2} toggle={this.toggle4} tag="div">
+                        <DropdownItem name='filter' tag="b"
+                                      onClick={this.doNothing()}>{filterByTopicButton}</DropdownItem>
+                        <DropdownItem name='filter' tag="b"
+                                      onClick={this.doNothing()}>{filterByTimeButton}</DropdownItem>
                     </ButtonDropdown>
                 </DropdownMenu>
             </ButtonDropdown>
         );
-
 
         //set the sort button outside the return to make code more clean
         const resetButton = (
@@ -468,7 +495,6 @@ class ReviewsPage extends Component {
                                         pic={pic}
                                         date={date}
                                         _id={_id}
-
                                     />
                                 </ListGroupItem>
                             </CSSTransition>
@@ -478,6 +504,6 @@ class ReviewsPage extends Component {
             </Container>
         );
     }
-
 }
+
 export default connect(null, {getReviews})(ReviewsPage);
