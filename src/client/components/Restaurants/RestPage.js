@@ -1,8 +1,6 @@
 import React, {Component} from 'react';
-import {Collapse, Button, CardBody, Card, Table, CardTitle, CardImg} from 'reactstrap';
+import {Collapse, Button, CardBody, Card, Table, CardImg} from 'reactstrap';
 import ReviewsPage from "../ReviewsPage/ReviewsPage";
-import Container from "reactstrap/es/Container";
-
 
 class RestPage extends Component {
     constructor(props) {
@@ -56,6 +54,8 @@ class RestPage extends Component {
     }
 
     starRatePic(avg) {
+        if( avg === 0)
+            return '00';
         if (avg < 0.75)
             return '05';
         if (avg < 1.25)
@@ -80,9 +80,7 @@ class RestPage extends Component {
     render() {
         let avg = this.setAvg();
         let starPic = this.starRatePic(avg);
-
-
-
+        
         const previewStyle = {
             justifyContent: 'center',
             alignItems: 'center',
