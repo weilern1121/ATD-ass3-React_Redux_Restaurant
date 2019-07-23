@@ -91,8 +91,6 @@ export const search = ({ userName, restName, restLocation, score, userLocation, 
     // Request body
     const body = JSON.stringify({ userName, restName, restLocation , score, userLocation, sort});
 
-    console.log("SEARCHHHHHH:", body);
-
     return {
         type: AppActionsConstants.SEARCH,
         body: body,
