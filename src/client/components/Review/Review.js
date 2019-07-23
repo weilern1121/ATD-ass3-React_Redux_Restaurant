@@ -4,21 +4,15 @@ import {
     Button,
     CardBody,
     Card,
-    ListGroupItem,
     Table,
-    ButtonDropdown,
-    DropdownToggle,
-    DropdownMenu, DropdownItem, ModalHeader, ModalBody, Alert, Form, FormGroup, Label, Input, Modal,
+    Alert, Form, FormGroup, Label, Input,
 
 } from 'reactstrap';
 import {connect} from "react-redux";
-import CardTitle from "reactstrap/es/CardTitle";
 import PropTypes from "prop-types";
 import ReactDropzone from "react-dropzone";
 import {editReview, deleteReview} from "./../App/actions";
 import ErrorBoundary from "../App/ErrorBoundary";
-// import DefRevPic from "../../defPics/defaultRevPic.jpg";
-
 
 class Review extends Component {
     constructor(props) {
@@ -234,6 +228,7 @@ class Review extends Component {
 
         // let avg = this.getAvg();
         let newDate = this.dateFormatted();
+
         return (
             <ErrorBoundary>
             <div>
@@ -246,9 +241,9 @@ class Review extends Component {
                 <Collapse isOpen={this.state.collapse1}>
                     <Card>
                         <CardBody>
-                            <Table hover>
-                                <tbody>
-                                <tr>
+                            <Table hover tag="a">
+                                <tbody >
+                                <tr >
                                     <td>User Name</td>
                                     <td>{this.props.userName}</td>
                                 </tr>
