@@ -16,12 +16,6 @@ export const register = ({ name, location, pic }) => {
 };
 
 export const writeReview = (review) =>{
-    const config = {
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    };
-
 
     // Request body
     const body = JSON.stringify(review);

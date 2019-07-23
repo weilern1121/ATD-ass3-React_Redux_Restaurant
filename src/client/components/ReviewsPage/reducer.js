@@ -1,6 +1,5 @@
 import {ReviewActionsConstants} from './constants.js';
 import initialState from "../../initialState";
-import {AppActionsConstants} from "../App/constants";
 
 
 

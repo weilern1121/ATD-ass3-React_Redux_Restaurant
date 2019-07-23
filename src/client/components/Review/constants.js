@@ -1,6 +1,6 @@
 const ReviewActionsConstants = {
-    GET_REVIEWS_BY_REST: 'GET_REVIEWS_BY_REST',
-    GET_REVIEWS_BY_USER: 'GET_REVIEWS_BY_USER',
+    DELETE_REVIEW: 'DELETE_REVIEW',
+    EDIT_REVIEW: 'EDIT_REVIEW',
 };
 
 export {ReviewActionsConstants}

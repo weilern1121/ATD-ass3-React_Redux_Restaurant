@@ -11,7 +11,7 @@ import {
 import {connect} from "react-redux";
 import PropTypes from "prop-types";
 import ReactDropzone from "react-dropzone";
-import {editReview, deleteReview} from "./../App/actions";
+import {editReview, deleteReview} from "./actions";
 import ErrorBoundary from "../App/ErrorBoundary";
 
 class Review extends Component {

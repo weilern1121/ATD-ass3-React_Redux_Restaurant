@@ -1,6 +1,8 @@
 import {ReviewActionsConstants} from './constants'
-import { call, put, takeEvery } from 'redux-saga/effects'
+import { call, put, takeEvery, takeLatest } from 'redux-saga/effects'
 import {success} from './actions'
+import {AppActionsConstants} from "../App/constants";
+
 
 function* renderToReducer(action){
     console.log('ReviewSaga=', action);
@@ -17,13 +19,13 @@ function* renderToReducer(action){
         const json = yield call([res, 'json']); //retrieve body of response
         yield put(success(json, action.type));
     } catch (e) {
-        console.alert(e.message);
+        console.log(e.message);
     }
 }
 
 function* ReviewSaga() {
     //using takeEvery, you take the action away from reducer to saga
-    yield takeEvery(ReviewActionsConstants.GET_REVIEWS_BY_REST, renderToReducer);
-    yield takeEvery(ReviewActionsConstants.GET_REVIEWS_BY_USER, renderToReducer);
+    yield takeLatest(ReviewActionsConstants.DELETE_REVIEW, renderToReducer);
+    yield takeLatest(ReviewActionsConstants.EDIT_REVIEW, renderToReducer);
 }
 export default ReviewSaga;

@@ -1,28 +1,26 @@
-import axios from 'axios';
 import { ReviewActionsConstants } from './constants';
-import {AppActionsConstants} from "../App/constants";
 
+export const deleteReview = (review) => {
 
-export const getReviews = ( {restName}) => {
     // Request body
-    const body = JSON.stringify({restName});
+    const body = JSON.stringify(review);
 
     return {
-        type: ReviewActionsConstants.GET_REVIEWS_BY_REST,
+        type: ReviewActionsConstants.DELETE_REVIEW,
         body: body,
-        uri:'/api/reviews/reviewsByRest',
+        uri:'/api/app/delete_review',
     };
 };
 
-export const getReviewsByUser = ( {name}) => {
+export const editReview = (review) => {
 
     // Request body
-    const body = JSON.stringify({name});
+    const body = JSON.stringify(review);
 
     return {
-        type: ReviewActionsConstants.GET_REVIEWS_BY_USER,
+        type: ReviewActionsConstants.EDIT_REVIEW,
         body: body,
-        uri:'/api/reviews/reviewsByUser',
+        uri:'/api/app/edit_review'
     };
 };
 

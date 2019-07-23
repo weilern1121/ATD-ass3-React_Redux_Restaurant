@@ -56,6 +56,8 @@ const AppReducer = (state = initialState.app, action) => {
                 average: action.payload.average,
                 reviews: action.payload.reviews.filter(rev => rev.userName === state.get('user').name)
             };
+            if(!state.get('user_reviews').get(state.get('user').name))
+                return state;
             let newRests = state.get('user_reviews').get(state.get('user').name).map(rest =>
             {
                 if(rest.name === action.payload.name && rest.location === action.payload.location)

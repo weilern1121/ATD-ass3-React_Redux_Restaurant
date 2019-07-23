@@ -260,7 +260,7 @@ router.post('/getSearchSuggests', function(req, res) {
                 .then(users =>
                 {
                     let userNames = users.map((user => user.name));
-                    return res.json({users: userNames, rests: restNames});
+                    return res.json({users: [...new Set(userNames)], rests: [...new Set(restNames)]});
                 });
 
         });

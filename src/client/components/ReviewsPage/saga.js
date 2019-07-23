@@ -1,9 +1,10 @@
 import {ReviewActionsConstants} from './constants'
-import { call, put, takeEvery } from 'redux-saga/effects'
+import { call, put, takeEvery , takeLatest} from 'redux-saga/effects'
 import {success} from './actions'
 
+
 function* renderToReducer(action){
-    console.log('ReviewSaga=', action);
+    console.log('ReviewSSSaga=', action);
     try {
         const res = yield call(fetch, action.uri,
             {
@@ -17,13 +18,13 @@ function* renderToReducer(action){
         const json = yield call([res, 'json']); //retrieve body of response
         yield put(success(json, action.type));
     } catch (e) {
-        console.alert(e.message);
+        console.log(e.message);
     }
 }
 
-function* ReviewSaga() {
+function* ReviewsSaga() {
     //using takeEvery, you take the action away from reducer to saga
-    yield takeEvery(ReviewActionsConstants.GET_REVIEWS_BY_REST, renderToReducer);
-    yield takeEvery(ReviewActionsConstants.GET_REVIEWS_BY_USER, renderToReducer);
+    yield takeLatest(ReviewActionsConstants.GET_REVIEWS_BY_REST, renderToReducer);
+    yield takeLatest(ReviewActionsConstants.GET_REVIEWS_BY_USER, renderToReducer);
 }
-export default ReviewSaga;
+export default ReviewsSaga;
