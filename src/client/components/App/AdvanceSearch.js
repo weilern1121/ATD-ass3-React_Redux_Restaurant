@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import {
     Button,
     Modal,
@@ -11,9 +11,10 @@ import {
     NavLink,
     Alert
 } from 'reactstrap';
-import { connect } from 'react-redux';
-import { search } from './actions';
+import {connect} from 'react-redux';
+import {search} from './actions';
 import PropTypes from 'prop-types';
+
 
 class AdvanceSearch extends Component {
     state = {
@@ -22,7 +23,10 @@ class AdvanceSearch extends Component {
         restLocation: null,
         score: null,
         msg: null,
-        sort: ''
+        sort: '',
+        currentValue: 0,
+        betterCloserFlag: false,
+        betterCloserScore: 1
     };
 
     static propTypes = {
@@ -33,25 +37,45 @@ class AdvanceSearch extends Component {
         this.setState({
             modal: !this.state.modal
         });
-    };
-
-    onChange = e => {
-        this.setState({ [e.target.name]: e.target.value });
+        //reset the error message when closing the search modal
+        if (!this.state.modal) {
+            this.setState({
+                msg: null,
+                betterCloserFlag: false
+            });
+        }
     };
 
     onSubmit = e => {
         e.preventDefault();
         let userLocation = '';
-
-        if(this.props.isConnected)
+        //validation checks
+        if (this.props.isConnected)
             userLocation = this.props.user.location;
-        else if (this.state.sort === 'closer') {
-            this.setState({msg:"Need to be logged in for 'closer' option."});
+        if (!this.props.isConnected && this.state.betterCloserFlag === true) {
+            this.setState({msg: "Need to be logged in for 'closer-better' option."});
             return;
         }
-        const { restName, restLocation, score, sort } = this.state;
+        if (this.state.currentValue === 0) {
+            this.setState({msg: "Need to insert value to 'closer-better' option."});
+            return;
+        }
+        if (this.state.betterCloserFlag){ //if true - search by the better-closer
+            if(userLocation!=="Tel-Aviv" &&userLocation!=='Jerusalem' &&userLocation!=='Beer Sheva' &&
+                userLocation!=='Haifa' && userLocation!=='Herzliya'){ //city check
+                this.setState({msg: "current location is not recognized."});
+                return;
+            }
+            const {currentValue, betterCloserFlag, betterCloserScore} = this.state;
+            this.props.search({userLocation, currentValue, betterCloserFlag ,betterCloserScore});
+        }
 
-        this.props.search({restName , restLocation, score, userLocation, sort});
+        else{//else- regular search
+            const {restName, restLocation, score, sort, betterCloserFlag} = this.state;
+            this.props.search({restName, restLocation, score, userLocation, sort, betterCloserFlag});
+
+        }
+        //clear search
         this.toggle();
         this.setState({
             modal: false,
@@ -59,15 +83,32 @@ class AdvanceSearch extends Component {
             restLocation: null,
             score: null,
             msg: null,
-            sort: ''
+            sort: '',
+            betterCloserFlag: false,
+            betterCloserScore: 1
         });
     };
+
+    toggle2 = () => {
+        this.setState({
+            betterCloserFlag: !this.state.betterCloserFlag
+        });
+    };
+
+    onChange = e => {
+        this.setState({[e.target.name]: e.target.value});
+    };
+
+    changeRange = e => {
+        this.setState({currentValue: e.target.value});
+    };
+
 
     render() {
         return (
             <div>
                 <NavLink onClick={this.toggle} href='#'>
-                    advance search
+                    Advance Search
                 </NavLink>
                 <Modal isOpen={this.state.modal} toggle={this.toggle}>
                     <ModalHeader toggle={this.toggle}>Advance Search</ModalHeader>
@@ -102,26 +143,43 @@ class AdvanceSearch extends Component {
                                     <option>>3</option>
                                     <option>>4</option>
                                 </Input>
-                                <Label for='sort'>Sort Results</Label>
+
                                 <FormGroup check>
-                                    <Label check>
-                                        <Input type="radio"
-                                               name="sort"
-                                               value={'better'}
-                                               onChange={this.onChange}/>
-                                        Better - sort restaurants by rate.
+                                    <Label>
+                                        <Input type="checkbox"
+                                               value={'betterCloserFlag'}
+                                               onChange={this.toggle2}/>
+                                        Better/Closer
+
+                                        <input type="range"
+                                               className="custom-range"
+                                               id="customRange1"
+                                               disabled={!this.state.betterCloserFlag}
+                                               value={this.state.currentValue}
+                                               step={10}
+                                               min={-100}
+                                               max={100}
+                                               onChange={this.changeRange}
+                                        />
+                                        {this.state.currentValue > 0 ? `Closer: ${100 - this.state.currentValue}% , Better: ${this.state.currentValue}%` : null}
+                                        {this.state.currentValue < 0 ? `Closer: ${-1 * this.state.currentValue}% , Better: ${(100 - ((-1) * this.state.currentValue))}%` : null}
+                                        {this.state.currentValue === 0 ? `Closer: 0% , Better: 0%` : null}
+                                    </Label>
+
+                                    <Label> Calculated better-closer Score
+                                        <Input type="select" name="betterCloserScore" id="betterCloserScore"
+                                               onChange={this.onChange}
+                                               disabled={!this.state.betterCloserFlag}>
+                                            <option>>1</option>
+                                            <option>>2</option>
+                                            <option>>3</option>
+                                            <option>>4</option>
+                                        </Input>
                                     </Label>
                                 </FormGroup>
-                                <FormGroup check>
-                                    <Label check>
-                                        <Input type="radio"
-                                               name="sort"
-                                               value={'closer'}
-                                               onChange={this.onChange}/>
-                                        Closer - sort results by distance to your location.
-                                    </Label>
-                                </FormGroup>
-                                <Button color='dark' type="button" onClick={this.onSubmit} style={{ marginTop: '2rem' }} block>
+
+                                <Button color='dark' type="button" onClick={this.onSubmit} style={{marginTop: '2rem'}}
+                                        block>
                                     Search
                                 </Button>
                             </FormGroup>
@@ -139,6 +197,6 @@ const mapStateToProps = state => ({
 });
 
 export default connect(
-    null,
-    { search }
+    mapStateToProps,
+    {search}
 )(AdvanceSearch);
