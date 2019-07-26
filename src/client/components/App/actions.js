@@ -1,7 +1,6 @@
 import { AppActionsConstants} from './constants.js';
 import axios from 'axios';
 
-
 export const register = ({ name, location, pic }) => {
 
     // Request body
