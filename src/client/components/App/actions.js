@@ -78,12 +78,12 @@ export const editUser = ({ oldName, name, location, pic }) =>{
     };
 };
 
-export const search = ({ userName, restName, restLocation, score, userLocation, sort }) => {
+export const search = ({ userName, restName, restLocation, score, userLocation, sort, currentValue, betterCloserFlag, betterCloserScore}) => {
 
     if (!userLocation)
         userLocation ='';
     // Request body
-    const body = JSON.stringify({ userName, restName, restLocation , score, userLocation, sort});
+    const body = JSON.stringify({ userName, restName, restLocation , score, userLocation, sort, currentValue, betterCloserFlag, betterCloserScore});
 
     return {
         type: AppActionsConstants.SEARCH,
