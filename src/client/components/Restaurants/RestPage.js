@@ -50,7 +50,7 @@ class RestPage extends Component {
     elementAvgReducer = (accumulator, currentValue) => (accumulator + this.elementAvg(currentValue));
 
     isDBRest() {
-        return this.props.name === 'SOHO' || this.props.name === 'McDonald\'s';
+        return this.props.name === 'SOHO' || this.props.name === 'McDonald\'s' || this.props.name === 'Moses';
     }
 
     starRatePic(avg) {
@@ -80,7 +80,7 @@ class RestPage extends Component {
     render() {
         let avg = this.setAvg();
         let starPic = this.starRatePic(avg);
-        
+
         const previewStyle = {
             justifyContent: 'center',
             alignItems: 'center',
