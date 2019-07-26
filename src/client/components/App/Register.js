@@ -18,7 +18,7 @@ import {register} from './actions';
 import ReactDropzone from "react-dropzone";
 import Autosuggest from 'react-autosuggest';
 
-const locations = [ 'Tel-Aviv', 'Beer-Sheva', 'Jerusalem', 'LA' ];
+const locations = ['Tel-Aviv', 'Beer Sheva', 'Jerusalem', 'LA', 'Haifa', 'Herzliya'];
 
 // Teach Autosuggest how to calculate suggestions for any given input value.
 const getSuggestions = value => {
