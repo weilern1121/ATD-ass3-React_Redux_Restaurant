@@ -214,8 +214,6 @@ function gradeRadius(restLocation, userLocation) {
             if (restLocation === 'Beer Sheva')
                 return 85;
             console.log("ERROR - restLocation:", restLocation, ",userLocation:", userLocation);
-            console.log("restLocation==='Tel-Aviv':", restLocation === 'Tel_Aviv');
-            // console.log("restLocation.equals('Tel_aviv'):",restLocation.equals('Tel_aviv'));
             break;
         case 'Herzliya':
             if (restLocation.equals('Tel-Aviv'))
@@ -268,9 +266,7 @@ function gradeRadius(restLocation, userLocation) {
             if (restLocation.equals('Beer Sheva'))
                 return 0;
             console.log("ERROR - restLocation:", restLocation, ",userLocation:", userLocation);
-            console.log("ERROR - restLocation:", restLocation, ",userLocation:", userLocation);
             break;
-
         default:
             console.log("ERROR - restLocation:", restLocation, ",userLocation:", userLocation);
             return 200;
@@ -327,7 +323,11 @@ router.post('/searchRests', function (req, res) {
             closer = 100 - better;
         }
 
-        let scoreInt = parseInt(betterCloserScore[1]);
+        let scoreInt;
+        if(betterCloserScore === 1)
+            scoreInt=1;
+        else
+            scoreInt = parseInt(betterCloserScore[1]);
         better /= 100;
         closer /= 100;
         // console.log('better',better,'closer',closer,'scoreInt',scoreInt);
@@ -340,8 +340,8 @@ router.post('/searchRests', function (req, res) {
                 });
             })
             .then(rests => {
-                rests.sort((a, b) => b.average - a.average);
-                return res.json(rests);
+                let sorted=rests.sort((a, b) => b.average - a.average);
+                return res.json(sorted);
             })
     }
 });
@@ -380,6 +380,3 @@ router.post('/getSearchSuggests', function (req, res) {
 });
 
 module.exports = router;
-
-
-
