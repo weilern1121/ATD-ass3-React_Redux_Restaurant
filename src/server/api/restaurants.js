@@ -10,7 +10,7 @@ const Restaurant = require('../model/restaurants');
 // @access  Public
 router.get('/', (req, res) => {
     Restaurant.find()
-        .sort({name: -1})
+        .sort({average: -1})
         .then(restaurants => res.json(restaurants));
 });
 
