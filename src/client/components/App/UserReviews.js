@@ -45,6 +45,18 @@ class UserReviews extends Component {
     };
 
     render() {
+
+        //remove a familiar not-relevant warnings
+        const realError = console.error;
+        console.error = (...x) => {
+            const tmp = x[0].split(" ");
+            if (tmp[0] === "Warning:" && tmp[1] === "Each" && tmp[2] === "child" && tmp[5] === "list"&& tmp[9] === "unique") {
+                return;
+            }
+            realError(...x);
+        };
+
+
         return (
             <div>
                 <Button onClick={this.toggle} style={{ marginTop: '2rem' }} block>
