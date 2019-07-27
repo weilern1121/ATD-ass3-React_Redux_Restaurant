@@ -309,7 +309,7 @@ class Review extends Component {
                                 <FormGroup className="mb-2 mr-sm-2 mb-sm-0">
                                     <Label for="name" className="mr-sm-2">User name</Label>
                                     <Input type="userName" label={this.props.user ? this.props.user : null}
-                                           id="name" disabled/>
+                                           id="name" disabled placeholder={this.props.user ? this.props.user.name : null}/>
                                     <Label for="newBathroomRate">Bathroom Quality</Label>
                                     <Input type="select" name="newBathroomRate" id="newBathroomRate"
                                            onChange={this.onChange}>
@@ -331,7 +331,7 @@ class Review extends Component {
                                     </Input>
                                     <Label for="newStaffRate">Staff Kindness</Label>
                                     <Input type="select" name="newStaffRate" id="newStaffRate"
-                                           onChange={this.onChange}>
+                                           onChange={this.onChange} placeholder={this.props.staffRate}>
                                         <option>1</option>
                                         <option>2</option>
                                         <option>3</option>
