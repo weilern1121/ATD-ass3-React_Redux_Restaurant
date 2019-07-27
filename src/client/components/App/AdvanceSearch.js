@@ -1,3 +1,4 @@
+
 import React, {Component} from 'react';
 import {
     Button,
@@ -49,21 +50,22 @@ class AdvanceSearch extends Component {
     onSubmit = e => {
         e.preventDefault();
         let userLocation = '';
-        //validation checks
         if (this.props.isConnected)
             userLocation = this.props.user.location;
         if (!this.props.isConnected && this.state.betterCloserFlag === true) {
             this.setState({msg: "Need to be logged in for 'closer-better' option."});
             return;
         }
-        if (this.state.currentValue === 0) {
-            this.setState({msg: "Need to insert value to 'closer-better' option."});
-            return;
-        }
+
         if (this.state.betterCloserFlag){ //if true - search by the better-closer
+            //validation checks
             if(userLocation!=="Tel-Aviv" &&userLocation!=='Jerusalem' &&userLocation!=='Beer Sheva' &&
                 userLocation!=='Haifa' && userLocation!=='Herzliya'){ //city check
                 this.setState({msg: "current location is not recognized."});
+                return;
+            }
+            if (this.state.currentValue === 0) {
+                this.setState({msg: "Need to insert value to 'closer-better' option."});
                 return;
             }
             const {currentValue, betterCloserFlag, betterCloserScore} = this.state;
