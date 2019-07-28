@@ -11,6 +11,7 @@ ID: 203570619 <br/>
 	Support all the features as described at: 
 	https://www.cs.bgu.ac.il/~majeek/atd/192/assignments/3/
 
+
 ## DESIGN:
 
 * **root**: the project's dependencies, the web-configuration and all codes' sub-folders.
@@ -118,11 +119,11 @@ ID: 203570619 <br/>
 * To Start Server:
 	inside the main folder-
 	run:
-1.	npm install
-2.	npm run server
+	1.	npm install
+	2.	npm run server
 
 * To Start User:
 	inside main folder-
 	run:
-1.	npm install (no need if already made in server)
-2.	npm run dev
+	1.	npm install (no need if already made in server)
+	2.	npm run dev
