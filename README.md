@@ -13,23 +13,22 @@ ID: 203570619
 
 ## DESIGN:
 
-		* root: the project's dependencies, the web-configuration and all codes' sub-folders.
-		* public: holds icons, logos and photos.
-		* src: separated to client and server (will be described next).
+* root: the project's dependencies, the web-configuration and all codes' sub-folders.
+* public: holds icons, logos and photos.
+* src: separated to client and server (will be described next).
+* server:	Our database stored in MongoDB and contains 2 databases:
+		Restaurants and users. NOTE – each restaurant holds her own reviews.
+		In addition, we defined 3 schemas : one for each of our database and one for more general requests ( like user search)  		to facilitate  the mongoDB- server integration.
 
-		* server:	Our database stored in MongoDB and contains 2 databases:
-				Restaurants and users. NOTE – each restaurant holds her own reviews.
-				In addition, we defined 3 schemas : one for each of our database and one for more general requests ( like user search)  to facilitate  the mongoDB- server integration.
-
-		* client:	implemented using the MVC pattern, contains redux-store and components that contain actions, reducer, saga and enums.
-				In our project we used Reactstrap framework.
+* client:	implemented using the MVC pattern, contains redux-store and components that contain actions, reducer, saga and enums.
+		In our project we used Reactstrap framework.
 
 		
 ## SERVER:
-		-server.js :	the main function of the server, used to initial the server (connet the mongoDB, set body-parser, 
+- server.js :	the main function of the server, used to initial the server (connet the mongoDB, set body-parser, 
 						add API routes and port-listening initialization).
-		-api:			contains 3 different classes (one per each schema), each class have her own method for client requests.
-		-model:			contains 3 mongoose.Schema (will described below).
+- api:			contains 3 different classes (one per each schema), each class have her own method for client requests.
+- model:			contains 3 mongoose.Schema (will described below).
 		
 ## CLIENT:
 		- main.js:	use initialState.js , reducers.js and sagas.js to initial a client.
@@ -37,27 +36,27 @@ ID: 203570619
 
 
 ## SCHEMAS: 
-defined in src/server/model , mongoose.Schema typed.
-		- app, fields:
-			- tags
-		- restaurant, fields:
-			- name
-			- location
-			- average
-			- reviews: (array such as every object in the array is a review):
-				- username
-				- bathroomRate
-				- cleanRate
-				- staffRate
-				- driveRate
-				- deliveryRate
-				- foodRate
-				- pic
-				- date
-		- user, fields:
-			- name
-			- location
-			- pic
+* defined in src/server/model , mongoose.Schema typed. <br>
+* app, fields:
+	- tags
+* restaurant, fields:
+	- name
+	- location
+	- average
+	- reviews: (array such as every object in the array is a review):
+		- username
+		- bathroomRate
+		- cleanRate
+		- staffRate
+		- driveRate
+		- deliveryRate
+		- foodRate
+		- pic
+		- date
+* user, fields:
+	- name
+	- location
+	- pic
 
 ## FEATURES:
 * Each feature corporates server request and might include local usage of the received state from the server (like reviews sort).
