@@ -1,9 +1,9 @@
 
 # ATD-ass3- Full Stack project
 Name: Tomer Kulla
-ID: 308235944
+ID: 308235944 <br/>
 Name: Noam Weiler
-ID: 203570619 
+ID: 203570619 <br/>
 
 ## ABOUT:
 
@@ -31,8 +31,12 @@ ID: 203570619
 - model:			contains 3 mongoose.Schema (will described below).
 		
 ## CLIENT:
-		- main.js:	use initialState.js , reducers.js and sagas.js to initial a client.
-		-components: contains 4 components: App (include login/register), Restaurants (for all the restaurant functionality, include single restaurant page), RiviewPage (for represent a user review, include sort and filter of all restaurants reviews) and Review (for single review functionality – details, edit and delete).
+* main.js:	use initialState.js , reducers.js and sagas.js to initial a client.
+* components: contains 4 components: 
+	- App (include login/register).
+	- Restaurants (for all the restaurant functionality, include single restaurant page).
+	- RiviewPage (for represent a user review, include sort and filter of all restaurants reviews).
+	- Review (for single review functionality – details, edit and delete).
 
 
 ## SCHEMAS: 
@@ -77,27 +81,27 @@ ID: 203570619
 
 ## FLOW EXAMPLE:
 
-Register: 
-1)	App/Register.js : a client clicked the ‘Register’ button.
+**Register**
+1)	**App/Register.js** : a client clicked the ‘Register’ button.
 
-2)	App/Register.js: onSubmit – creating a user request object and send it via this.props.register (the register function got mapped into this.props in mapStateToProps during the connect initialization in client/main.js ).
+2)	**App/Register.js**: onSubmit – creating a user request object and send it via this.props.register (the register function got mapped into this.props in mapStateToProps during the connect initialization in client/main.js ).
 
-3)	App/actions.js: The register function takes the user fields’ argument , parsed it into json object and send it (by axios) to the server. This specific function sends the request to the url ‘http://localhost:800/api/app/users’ . Note- we added a proxy field to the webpack.config.js to simplify the sent address.
+3)	**App/actions.js**: The register function takes the user fields’ argument , parsed it into json object and send it (by axios) to the server. This specific function sends the request to the url ‘http://localhost:800/api/app/users’ . Note- we added a proxy field to the webpack.config.js to simplify the sent address.
 
-4)	App/saga.js: the saga middleware catches the AppActions type (i.e. register) from previous step, wrap it with header and typeOf method and send it to the server as a yield call function. 
+4)	**App/saga.js**: the saga middleware catches the AppActions type (i.e. register) from previous step, wrap it with header and typeOf method and send it to the server as a yield call function. 
 
-5)	Server.js: the server already routed the requests (during initialization), the ‘http://localhost:800/api/app’ assigned to ‘src/server/api/app’.
+5)	**Server.js**: the server already routed the requests (during initialization), the ‘http://localhost:800/api/app’ assigned to ‘src/server/api/app’.
 
-6)	Server/api/app.js: check that all fields are legal (otherwise send an error), check that name is not already have been taken (otherwise send an error), create a new user instance (by the UserModel schema), add it to the database and return a json to the client.
+6)	**Server/api/app.js**: check that all fields are legal (otherwise send an error), check that name is not already have been taken (otherwise send an error), create a new user instance (by the UserModel schema), add it to the database and return a json to the client.
 
-7)	App/saga.js:check the returned promise from the server, if it have an error message- fetch a fail message back to client (via App/actions.js) otherwise- sent the respond json from server to the App/actions.js .
+7)	**App/saga.js**:check the returned promise from the server, if it have an error message- fetch a fail message back to client (via App/actions.js) otherwise- sent the respond json from server to the App/actions.js .
 
-8)	App/actions.js: [the continuation of step 3] if error occurred in the server side- dispatch an error and sent back to user. Otherwise- dispatch a register-confirmation enum object with the user json’s object.
+8)	**App/actions.js**: [the continuation of step 3] if error occurred in the server side- dispatch an error and sent back to user. Otherwise- dispatch a register-confirmation enum object with the user json’s object.
 
 
-9)	App/reducer.js: catch the error – and set the current client state error field to the server’s error response. Otherwise (i.e. catch a register-confirmation enum object) , set the client state’s current user to the received user, set the client state’s isConnected field to true and the isLoading to false.
+9)	**App/reducer.js**: catch the error – and set the current client state error field to the server’s error response. Otherwise (i.e. catch a register-confirmation enum object) , set the client state’s current user to the received user, set the client state’s isConnected field to true and the isLoading to false.
 
-10)	App/Register.js: [back to the beginning function] the local function componentDidUpdate check if there are any changes in the props. If error received- set the error state and print an error message to the client. Else- the new window (of the registration page) get closed.
+10)	**App/Register.js**: [back to the beginning function] the local function componentDidUpdate check if there are any changes in the props. If error received- set the error state and print an error message to the client. Else- the new window (of the registration page) get closed.
 
 ## EXTRA FEATURES:
 * Option of mixing sort and filter reviews in the same query, option to reset queries.
