@@ -112,7 +112,12 @@ ID: 203570619 <br/>
 * Option of mixing sort and filter reviews in the same query, option to reset queries.
 * Stars rank – updated on every edit/delete/add review in the restaurant.
 
-	
+## EXTRA USED LIBRARIES:
+1. reactstrap (as UI workframe)
+2. react-dropzone
+3. react-autosuggest
+4. react-transition-group
+
 
 ## HOW TO RUN: 
 * Open 2 terminal windows/cmd in the main folder.
