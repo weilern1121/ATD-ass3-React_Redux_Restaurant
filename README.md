@@ -36,10 +36,11 @@ ID: 203570619
 		-components: contains 4 components: App (include login/register), Restaurants (for all the restaurant functionality, include single restaurant page), RiviewPage (for represent a user review, include sort and filter of all restaurants reviews) and Review (for single review functionality – details, edit and delete).
 
 
-## SCHEMAS: defined in src/server/model , mongoose.Schema typed.
-		-app, fields:
+## SCHEMAS: 
+defined in src/server/model , mongoose.Schema typed.
+		- app, fields:
 			- tags
-		-restaurant, fields:
+		- restaurant, fields:
 			- name
 			- location
 			- average
@@ -53,15 +54,15 @@ ID: 203570619
 				- foodRate
 				- pic
 				- date
-		-user, fields:
+		- user, fields:
 			- name
 			- location
 			- pic
 
-##FEATURES:
+## FEATURES:
 * Each feature corporates server request and might include local usage of the received state from the server (like reviews sort).
 * Each feature sends a request to the server via actions.js and catch the server’s respond via reducer.js (NOTE- actions.js and reducer.js of the correspond component, combined in the main.js during the client initialization).
-*Each client’s action is dispatched to the Store via saga. The renderToReducer function in the sagas sends a promise to the sever, fetch the returned data from the server and moved it back the to the store.
+* Each client’s action is dispatched to the Store via saga. The renderToReducer function in the sagas sends a promise to the sever, fetch the returned data from the server and moved it back the to the store.
 
 * Core Features:
 	- Register : required a unique user name, a location and a profile picture.
@@ -75,8 +76,8 @@ ID: 203570619
 	- Login/Logout: by username.
 
 
-	##FLOW EXAMPLE:
-TODO – need to add saga	
+## FLOW EXAMPLE:
+
 Register: 
 1)	App/Register.js : a client clicked the ‘Register’ button.
 
