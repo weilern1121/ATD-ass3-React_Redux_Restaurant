@@ -20,8 +20,8 @@ ID: 203570619 <br/>
 * **server**:
 	- Our database stored in MongoDB and contains 2 databases:
 		Restaurants and users. 
-		NOTE – each restaurant holds her own reviews.
-	- In addition, we defined 3 schemas : one for each of our database and one for more general requests ( like user search)  		to facilitate the mongoDB- server integration.
+	- NOTE – each restaurant holds her own reviews.
+	- We defined 3 schemas : one for each of our database and one for more general requests ( like user search) to facilitate the mongoDB- server integration.
 
 * **client**:	
 	- Implemented using the MVC pattern.
