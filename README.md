@@ -45,9 +45,9 @@ ID: 203570619 <br/>
 
 ## SCHEMAS: 
 * defined in src/server/model , mongoose.Schema typed. <br>
-* app, fields:
+* **app**, fields:
 	- tags
-* restaurant, fields:
+* **restaurant**, fields:
 	- name
 	- location
 	- average
@@ -61,7 +61,7 @@ ID: 203570619 <br/>
 		- foodRate
 		- pic
 		- date
-* user, fields:
+* **user**, fields:
 	- name
 	- location
 	- pic
@@ -72,15 +72,15 @@ ID: 203570619 <br/>
 * Each client’s action is dispatched to the Store via saga. The renderToReducer function in the sagas sends a promise to the sever, fetch the returned data from the server and moved it back the to the store.
 
 * Core Features:
-	- Register : required a unique user name, a location and a profile picture.
-	- View profile: of other users’ information and reviews.
-	- Edit profile: change user name(for a not-already taken one), location and profile picture.
-	- user reviews: view own review, ability to delete\edit them.
-	- Write a restaurant review: include optional picture.
-	- View restaurant: include sort and filter the restaurants’ reviews. Already logged in user that  have a review in a specific restaurant can edit/delete his own review.
-	- Search restaurant: empty search will provide all the restaurants in our database as a result. Search options: name, location, name and location. Each option may include filter (of average restaurant reviews rank). Another search option is the closer/better restaurant search: closer – smaller search radius, better- larger search radius (more high ranked restaurants), the results are sorter by score. 
-	- search user: by user name, the result is same as ‘View profile’.
-	- Login/Logout: by username.
+	- **Register** : required a unique user name, a location and a profile picture.
+	- **View profile**: of other users’ information and reviews.
+	- **Edit profile**: change user name(for a not-already taken one), location and profile picture.
+	- **user reviews**: view own review, ability to delete\edit them.
+	- **Write a restaurant review**: include optional picture.
+	- **View restaurant**: include sort and filter the restaurants’ reviews. Already logged in user that  have a review in a specific restaurant can edit/delete his own review.
+	- **Search restaurant**: empty search will provide all the restaurants in our database as a result. Search options: name, location, name and location. Each option may include filter (of average restaurant reviews rank). Another search option is the closer/better restaurant search: closer – smaller search radius, better- larger search radius (more high ranked restaurants), the results are sorter by score. 
+	- **search user**: by user name, the result is same as ‘View profile’.
+	- **Login/Logout**: by username.
 
 
 ## FLOW EXAMPLE:
@@ -121,8 +121,8 @@ ID: 203570619 <br/>
 1.	npm install
 2.	npm run server
 
-* To Start User
+* To Start User:
 	inside main folder-
 	run:
-1.npm install (no need if already made in server)
-2.npm run dev
+1.	npm install (no need if already made in server)
+2.	npm run dev
