@@ -13,15 +13,19 @@ ID: 203570619 <br/>
 
 ## DESIGN:
 
-* root: the project's dependencies, the web-configuration and all codes' sub-folders.
-* public: holds icons, logos and photos.
-* src: separated to client and server (will be described next).
-* server:	Our database stored in MongoDB and contains 2 databases:
-		Restaurants and users. NOTE – each restaurant holds her own reviews.
-		In addition, we defined 3 schemas : one for each of our database and one for more general requests ( like user search)  		to facilitate  the mongoDB- server integration.
+* **root**: the project's dependencies, the web-configuration and all codes' sub-folders.
+* **public**: holds icons, logos and photos.
+* **src**: separated to client and server (will be described next).
+* **server**:
+	- Our database stored in MongoDB and contains 2 databases:
+		Restaurants and users. 
+		NOTE – each restaurant holds her own reviews.
+	- In addition, we defined 3 schemas : one for each of our database and one for more general requests ( like user search)  		to facilitate the mongoDB- server integration.
 
-* client:	implemented using the MVC pattern, contains redux-store and components that contain actions, reducer, saga and enums.
-		In our project we used Reactstrap framework.
+* **client**:	
+	- Implemented using the MVC pattern.
+	- Contains redux-store and components that each one of them contains actions, reducer, saga and enums.
+	- In our project we used Reactstrap framework.
 
 		
 ## SERVER:
