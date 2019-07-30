@@ -216,54 +216,54 @@ function gradeRadius(restLocation, userLocation) {
             console.log("ERROR - restLocation:", restLocation, ",userLocation:", userLocation);
             break;
         case 'Herzliya':
-            if (restLocation.equals('Tel-Aviv'))
+            if (restLocation === 'Tel-Aviv')
                 return 10;
-            if (restLocation.equals('Herzliya'))
+            if (restLocation === 'Herzliya')
                 return 0;
-            if (restLocation.equals('Jerusalem'))
+            if (restLocation === 'Jerusalem')
                 return 55;
-            if (restLocation.equals('Haifa'))
+            if (restLocation === 'Haifa')
                 return 70;
-            if (restLocation.equals('Beer Sheva'))
+            if (restLocation === 'Beer Sheva')
                 return 95;
             console.log("ERROR - restLocation:", restLocation, ",userLocation:", userLocation);
             break;
         case 'Jerusalem':
-            if (restLocation.equals('Tel-Aviv'))
+            if (restLocation === 'Tel-Aviv')
                 return 50;
-            if (restLocation.equals('Herzliya'))
+            if (restLocation === 'Herzliya')
                 return 55;
-            if (restLocation.equals('Jerusalem'))
+            if (restLocation === 'Jerusalem')
                 return 0;
-            if (restLocation.equals('Haifa'))
+            if (restLocation === 'Haifa')
                 return 110;
-            if (restLocation.equals('Beer Sheva'))
+            if (restLocation === 'Beer Sheva')
                 return 65;
             console.log("ERROR - restLocation:", restLocation, ",userLocation:", userLocation);
             break;
         case 'Haifa':
-            if (restLocation.equals('Tel-Aviv'))
+            if (restLocation === 'Tel-Aviv')
                 return 80;
-            if (restLocation.equals('Herzliya'))
+            if (restLocation === 'Herzliya')
                 return 70;
-            if (restLocation.equals('Jerusalem'))
+            if (restLocation === 'Jerusalem')
                 return 110;
-            if (restLocation.equals('Haifa'))
+            if (restLocation === 'Haifa')
                 return 0;
-            if (restLocation.equals('Beer Sheva'))
+            if (restLocation === 'Beer Sheva')
                 return 170;
             console.log("ERROR - restLocation:", restLocation, ",userLocation:", userLocation);
             break;
         case 'Beer Sheva':
-            if (restLocation.equals('Tel-Aviv'))
+            if (restLocation === 'Tel-Aviv')
                 return 85;
-            if (restLocation.equals('Herzliya'))
+            if (restLocation === 'Herzliya')
                 return 95;
-            if (restLocation.equals('Jerusalem'))
+            if (restLocation === 'Jerusalem')
                 return 65;
-            if (restLocation.equals('Haifa'))
+            if (restLocation === 'Haifa')
                 return 170;
-            if (restLocation.equals('Beer Sheva'))
+            if (restLocation === 'Beer Sheva')
                 return 0;
             console.log("ERROR - restLocation:", restLocation, ",userLocation:", userLocation);
             break;
@@ -313,7 +313,7 @@ router.post('/searchRests', function (req, res) {
             });
 
     } else {//else- better-closer search
-        const {currentValue, userLocation, betterCloserScore} = req.body;
+        const {currentValue, userLocation} = req.body;
         let better, closer;
         if (currentValue < 0) { //get the aligned values
             closer = -1 * currentValue;
@@ -324,14 +324,14 @@ router.post('/searchRests', function (req, res) {
         }
 
         let scoreInt;
-        if(betterCloserScore === 1)
-            scoreInt=1;
+        if(better>closer)
+            scoreInt=better/20;
         else
-            scoreInt = parseInt(betterCloserScore[1]);
+            scoreInt=closer/20;
+        scoreInt--;
         better /= 100;
         closer /= 100;
         // console.log('better',better,'closer',closer,'scoreInt',scoreInt);
-
         RestModel.find()
             .then(rests => {
                 return rests.filter(function (rest) {
@@ -380,3 +380,4 @@ router.post('/getSearchSuggests', function (req, res) {
 });
 
 module.exports = router;
+
