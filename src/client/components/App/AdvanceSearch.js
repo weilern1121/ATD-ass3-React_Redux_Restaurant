@@ -1,4 +1,3 @@
-
 import React, {Component} from 'react';
 import {
     Button,
@@ -168,16 +167,6 @@ class AdvanceSearch extends Component {
                                         {this.state.currentValue === 0 ? `Closer: 0% , Better: 0%` : null}
                                     </Label>
 
-                                    <Label> Calculated better-closer Score
-                                        <Input type="select" name="betterCloserScore" id="betterCloserScore"
-                                               onChange={this.onChange}
-                                               disabled={!this.state.betterCloserFlag}>
-                                            <option>>1</option>
-                                            <option>>2</option>
-                                            <option>>3</option>
-                                            <option>>4</option>
-                                        </Input>
-                                    </Label>
                                 </FormGroup>
 
                                 <Button color='dark' type="button" onClick={this.onSubmit} style={{marginTop: '2rem'}}
