@@ -59,16 +59,4 @@ router.post('/reviewsByUser', (req, res) => {
         .catch(err => console.log(err));
 });
 
-
-
-
-// @route   DELETE api/reviewsPage/:id
-// @desc    Delete A review
-// @access  Private
-router.delete('/:id', (req, res) => {
-    Review.findById(req.body._id)
-        .then(review => review.remove().then(() => res.json({success: true})))
-        .catch(err => res.status(404).json({success: false}));
-});
-
 module.exports = router;

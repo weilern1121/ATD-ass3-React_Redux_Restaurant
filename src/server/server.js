@@ -1,8 +1,6 @@
 const bodyParser = require('body-parser');
 const express = require('express');
 const mongoose = require('mongoose');
-const { resolve } = require('path');
-const fs = require('fs');
 const path = require('path');
 
 
@@ -35,14 +33,7 @@ app.use(bodyParser.urlencoded({extended:false})); //handle body requests
 console.log(__dirname);
 app.use(express.static(path.join(__dirname, 'public')));
 
-
-
-// Add backend api routes
-// fs.readdirSync(__dirname + '/api').forEach((file) => {
-//   require(`./api/${file.substr(0, file.indexOf('.'))}`)(app);
-// });
 app.use('/api/app', require('./api/app'));
-app.use('/api/restaurants', require('./api/restaurants'));
 app.use('/api/reviews', require('./api/reviewsPage'));
 
 

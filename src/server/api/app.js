@@ -2,10 +2,6 @@ let UserModel = require('../model/user');
 let RestModel = require('../model/restaurants');
 const express = require('express');
 
-let _handleError = function (err) {
-    if (err) return console.log(err);
-};
-
 const router = express.Router();
 
 router.post('/users', function (req, res) {
